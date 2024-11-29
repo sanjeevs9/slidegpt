@@ -183,11 +183,11 @@ function parseContent(content) {
     console.log({text},{template})
     
     try {
-      //   const concat=genric+`user:${text}`;
+        const concat=genric+`user:${text}`;
       
-      // const generatedContent = await generateContent(concat);
+      const generatedContent = await generateContent(concat);
  
-      // const value = generatedContent.content[0].text;
+      const value = generatedContent.content[0].text;
       
 
 
@@ -243,7 +243,7 @@ Command automation revolutionizes system management by streamlining repetitive t
       
       
       //prase the ai generated content
-      const slidesContent = parseContent(value2);
+      const slidesContent = parseContent(value);
 
     
       // console.log(slidesContent)

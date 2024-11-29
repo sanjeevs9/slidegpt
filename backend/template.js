@@ -29,9 +29,7 @@ const TEMPLATE={
               { slideNumber: { x: 9.5, y: 7.3, color: '000000', fontSize: 10 } } // Positioned for full-width slide
             ]
           },
-          TITLE:{
-             return :{ x: 0.5, y: 0.8, w: '90%', align: 'center', color: '000000', fontSize: 22, bold: true }
-          },
+          TITLE:{ x: 0.9, y: 1.0, w: '90%', align: 'center', color: '000000', fontSize: 22, bold: true },
           PARAGRAPH:(text,index)=>{
             return {
               text: text,  // Only text
@@ -48,7 +46,7 @@ const TEMPLATE={
             CONTENT:(text,index)=>{
                 return {
                     textArray: [
-                      { text: '• ', options: { fontSize: 16, color: '00CD00' } }, // Bullet with different color
+                      { text: '• ', options: { fontSize: 16, color: '30acec' } }, // Bullet with different color
                       { text: text, options: { fontSize: 16, color: '333333' } }  // Text with original color
                     ],
                     options: {
@@ -90,9 +88,7 @@ const TEMPLATE={
                   { slideNumber: { x: 9.5, y: 7.3, color: '000000', fontSize: 10 } } // Positioned for full-width slide
                 ]
               },
-              TITLE:{
-                return : { x: 0.5, y: 0.8, w: '90%', align: 'center', color: '000000', fontSize: 22, bold: true }
-              },
+              TITLE:{ x: 0.9, y: 1.0, w: '90%', align: 'center', color: '000000', fontSize: 22, bold: true },
               PARAGRAPH:(text,index)=>{
                 return {
                   text: text,  // Only text
@@ -109,7 +105,7 @@ const TEMPLATE={
                 CONTENT:(text,index)=>{
                     return {
                         textArray: [
-                          { text: '• ', options: { fontSize: 16, color: '00CD00' } }, // Bullet with different color
+                          { text: '\u25BA ', options: { fontSize: 14, color: 'a53010' } }, // Bullet with different color
                           { text: text, options: { fontSize: 16, color: '333333' } }  // Text with original color
                         ],
                         options: {

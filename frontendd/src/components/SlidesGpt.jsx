@@ -12,12 +12,12 @@ const templates = [
   {
     id: "GENERIC_MODERN",
     name: "Modern",
-    preview: T1,
+    preview: T2,
   },
   {
     id: "GENERIC_SIMPLE",
     name: "Classic",
-    preview: T2,
+    preview: T1,
   },
 ]
 

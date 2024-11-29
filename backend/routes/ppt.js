@@ -183,11 +183,11 @@ function parseContent(content) {
     console.log({text},{template})
     
     try {
-        const concat=genric+`user:${text}`;
+      //   const concat=genric+`user:${text}`;
       
-      const generatedContent = await generateContent(concat);
+      // const generatedContent = await generateContent(concat);
  
-      const value = generatedContent.content[0].text;
+      // const value = generatedContent.content[0].text;
       
 
 
@@ -243,9 +243,8 @@ Command automation revolutionizes system management by streamlining repetitive t
       
       
       //prase the ai generated content
-      const slidesContent = parseContent(value);
+      const slidesContent = parseContent(value2);
 
-      console.log(slidesContent)
     
       // console.log(slidesContent)
       
@@ -258,7 +257,7 @@ Command automation revolutionizes system management by streamlining repetitive t
     await Promise.all(
       slidesContent.map(async slideContent => {
        
-        let slide = pptx.addSlide({ masterName:"GENERIC_SIMPLE"});
+        let slide = pptx.addSlide({ masterName:template});
 
         slide.addText(slideContent.title, TEMPLATE[template].TITLE);
         
@@ -290,17 +289,17 @@ Command automation revolutionizes system management by streamlining repetitive t
           
           try{
               
-          //   await generateImage(slideContent.image)
+            await generateImage(slideContent.image)
            
-          //   slide.addImage({
-          //     path: `./generated_image.png`,
-          //     x: 6,
-          //     y: 2,
-          //     w: 10, 
-          //     h: 7.5 ,
-          //     sizing: { type: "cover", w: 3, h: 2 } 
+            slide.addImage({
+              path: `./generated_image.png`,
+              x: 6,
+              y: 2,
+              w: 10, 
+              h: 7.5 ,
+              sizing: { type: "cover", w: 3, h: 2 } 
               
-          // });
+          });
               
               
           //     await downloadImage(slideContent.image)

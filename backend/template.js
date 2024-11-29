@@ -3,7 +3,7 @@ const TEMPLATE={
         TEMPLATE: {
             title: 'GENERIC_SIMPLE',
             margin: [0, 0, 0, 0], // Removed extra margins to use the full slide area
-            background: { path: "../images/T1.png" },
+            background: { path: "./images/T1.png" },
             objects: [
               // Title Section (Optional, uncomment if needed)
               // { text: {
@@ -30,20 +30,20 @@ const TEMPLATE={
             ]
           },
           TITLE:{
-            options: { x: 0.5, y: 0.8, w: '90%', align: 'center', color: '000000', fontSize: 22, bold: true }
+             return :{ x: 0.5, y: 0.8, w: '90%', align: 'center', color: '000000', fontSize: 22, bold: true }
           },
           PARAGRAPH:(text,index)=>{
             return {
-                textArray: [
-                  { text: text, options: { fontSize: 16, color: '333333' } }  // Text with original color
-                ],
-                options: {
-                  x: 1.0,
-                  y: 2.2 + index * 0.5,
-                  w: '95%',
-                  align: 'left'
-                }
-              };
+              text: text,  // Only text
+              options: {
+                fontSize: 16,
+                color: '333333',
+                x: 1.0,
+                y: 2.2 + index * 0.5,
+                w: '95%',
+                align: 'left'
+              }
+            };
             },
             CONTENT:(text,index)=>{
                 return {
@@ -64,7 +64,7 @@ const TEMPLATE={
             TEMPLATE: {
                 title: 'GENERIC_MODERN',
                 margin: [0, 0, 0, 0], // Removed extra margins to use the full slide area
-                background: { path: "../images/T1.png" },
+                background: { path: "./images/T2.png" },
                 objects: [
                   // Title Section (Optional, uncomment if needed)
                   // { text: {
@@ -91,20 +91,20 @@ const TEMPLATE={
                 ]
               },
               TITLE:{
-    
+                return : { x: 0.5, y: 0.8, w: '90%', align: 'center', color: '000000', fontSize: 22, bold: true }
               },
               PARAGRAPH:(text,index)=>{
                 return {
-                    textArray: [
-                      { text: text, options: { fontSize: 16, color: '333333' } }  // Text with original color
-                    ],
-                    options: {
-                      x: 1.0,
-                      y: 2.2 + index * 0.5,
-                      w: '95%',
-                      align: 'left'
-                    }
-                  };
+                  text: text,  // Only text
+                  options: {
+                    fontSize: 16,
+                    color: '333333',
+                    x: 1.0,
+                    y: 2.2 + index * 0.5,
+                    w: '95%',
+                    align: 'left'
+                  }
+                };
                 },
                 CONTENT:(text,index)=>{
                     return {

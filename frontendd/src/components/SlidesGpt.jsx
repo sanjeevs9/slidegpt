@@ -5,41 +5,53 @@ import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import T1 from "../../images/T1.png"
+import T2 from "../../images/T2.png"
 
 const templates = [
   {
-    id: "modern",
+    id: "GENERIC_MODERN",
     name: "Modern",
-    preview: "/placeholder.svg?height=120&width=200",
+    preview: T1,
   },
   {
-    id: "classic",
+    id: "GENERIC_SIMPLE",
     name: "Classic",
-    preview: "/placeholder.svg?height=120&width=200",
-  },
-  {
-    id: "minimalist",
-    name: "Minimalist",
-    preview: "/placeholder.svg?height=120&width=200",
-  },
-  {
-    id: "creative",
-    name: "Creative",
-    preview: "/placeholder.svg?height=120&width=200",
+    preview: T2,
   },
 ]
 
 export default function SlidesGPT() {
   const [prompt, setPrompt] = useState("")
-  const [theme, setTheme] = useState("white")
+  
   const [selectedTemplate, setSelectedTemplate] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
 
   const handleGenerate = async () => {
+    console.log("hiii");
+    
     setIsGenerating(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsGenerating(false)
+    fetch('http://localhost:3000/generate-ppt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: prompt, template: selectedTemplate }),
+      })
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = 'generated-ppt.pptx';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          setIsGenerating(false)
+        })
+        .catch(err => console.error('Error generating PPT:', err));
+   
   }
 
   return (
@@ -120,7 +132,7 @@ export default function SlidesGPT() {
             </div>
           </div>
 
-          <RadioGroup
+          {/* <RadioGroup
             value={theme}
             onValueChange={setTheme}
             className="flex items-center justify-center gap-4"
@@ -137,7 +149,7 @@ export default function SlidesGPT() {
               <Upload className="w-4 h-4 mr-2" />
               Upload Custom Theme
             </Button>
-          </RadioGroup>
+          </RadioGroup> */}
 
           <Button
             onClick={handleGenerate}

@@ -6,8 +6,8 @@ const path = require('path');
 const router = express.Router();
 const Anthropic=require("@anthropic-ai/sdk");
 const FormData=require("form-data")
-const { GENERIC_SIMPLE, GENERIC_SIMPLE_TITLE, GENERIC_SIMPLE_CONTENT, getGenericSimpleContent, TEMPLATE } = require('../template');
-const image1="/images/T1B.png"
+const { GENERIC_SIMPLE, GENERIC_SIMPLE_TITLE, GENERIC_SIMPLE_CONTENT, getGenericSimpleContent, TEMPLATE } = require('../template.js');
+const image1="/images/T1.png"
 const dotenv =require("dotenv")
 dotenv.config();
 const CLAUDE=process.env.CLAUDE;
@@ -180,14 +180,15 @@ function parseContent(content) {
 
   router.post('/generate-ppt', async (req, res) => {
     const { text,template } = req.body;
+    console.log({text},{template})
     
     try {
         const concat=genric+`user:${text}`;
       
       const generatedContent = await generateContent(concat);
  
-      
       const value = generatedContent.content[0].text;
+      
 
 
       
@@ -244,6 +245,7 @@ Command automation revolutionizes system management by streamlining repetitive t
       //prase the ai generated content
       const slidesContent = parseContent(value);
 
+      console.log(slidesContent)
     
       // console.log(slidesContent)
       
@@ -256,7 +258,7 @@ Command automation revolutionizes system management by streamlining repetitive t
     await Promise.all(
       slidesContent.map(async slideContent => {
        
-        let slide = pptx.addSlide({ masterName:template});
+        let slide = pptx.addSlide({ masterName:"GENERIC_SIMPLE"});
 
         slide.addText(slideContent.title, TEMPLATE[template].TITLE);
         
@@ -288,17 +290,17 @@ Command automation revolutionizes system management by streamlining repetitive t
           
           try{
               
-            await generateImage(slideContent.image)
+          //   await generateImage(slideContent.image)
            
-            slide.addImage({
-              path: `./generated_image.png`,
-              x: 6,
-              y: 2,
-              w: 10, 
-              h: 7.5 ,
-              sizing: { type: "cover", w: 3, h: 2 } 
+          //   slide.addImage({
+          //     path: `./generated_image.png`,
+          //     x: 6,
+          //     y: 2,
+          //     w: 10, 
+          //     h: 7.5 ,
+          //     sizing: { type: "cover", w: 3, h: 2 } 
               
-          });
+          // });
               
               
           //     await downloadImage(slideContent.image)

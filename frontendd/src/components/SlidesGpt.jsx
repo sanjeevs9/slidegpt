@@ -31,28 +31,35 @@ export default function SlidesGPT() {
     console.log("hiii");
     
     setIsGenerating(true)
-    fetch('http://localhost:3000/generate-ppt', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: prompt, template: selectedTemplate }),
+    fetch('http://ec2-13-60-35-70.eu-north-1.compute.amazonaws.com:3000/generate-ppt', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: prompt, template: selectedTemplate }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.blob();
       })
-        .then(response => response.blob())
-        .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = url;
-          a.download = 'generated-ppt.pptx';
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          setIsGenerating(false)
-        })
-        .catch(err => console.error('Error generating PPT:', err));
-   
-  }
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'generated-ppt.pptx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        setIsGenerating(false);
+      })
+      .catch(err => {
+        console.error('Error generating PPT:', err);
+        setIsGenerating(false);
+      });
+    }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800">
@@ -60,14 +67,7 @@ export default function SlidesGPT() {
       <nav className="px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <h1 className="text-2xl font-bold text-white">SlidesGPT</h1>
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#" className="text-white/80 hover:text-white transition-colors">Products</a>
-            <a href="#" className="text-white/80 hover:text-white transition-colors">Pricing</a>
-            <a href="#" className="text-white/80 hover:text-white transition-colors">Contact</a>
-            <a href="#" className="text-white/80 hover:text-white transition-colors">Resources</a>
-            <Button variant="ghost" className="text-white hover:bg-white/10">Sign in</Button>
-            <Button className="bg-yellow-400 hover:bg-yellow-500 text-black">Create slides now</Button>
-          </div>
+          
         </div>
       </nav>
 

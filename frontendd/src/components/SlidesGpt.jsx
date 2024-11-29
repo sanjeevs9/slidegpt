@@ -31,7 +31,7 @@ export default function SlidesGPT() {
     console.log("hiii");
     
     setIsGenerating(true)
-    fetch('http://ec2-13-60-35-70.eu-north-1.compute.amazonaws.com:3000/generate-ppt', {
+    fetch('https://gptapi.sanjeevdev.in', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -4,17 +4,15 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const router = express.Router();
-const Anthropic=require("@anthropic-ai/sdk");
 const FormData=require("form-data")
 const { GENERIC_SIMPLE, GENERIC_SIMPLE_TITLE, GENERIC_SIMPLE_CONTENT, getGenericSimpleContent, TEMPLATE } = require('../template.js');
 const image1="/images/T1.png"
 const dotenv =require("dotenv")
 dotenv.config();
-const CLAUDE=process.env.CLAUDE;
 const OPENAI=process.env.OPEN_AI;
 const freeAI=process.env.freeAi;
 
-console.log({CLAUDE})
+console.log({OPENAI,freeAI})
 
 const genric = `
 Create a PowerPoint in the following format:
@@ -40,18 +38,30 @@ Use only the information provided in this prompt for generating content and dont
 
 
 
-const anthropic = new Anthropic({
-    apiKey: CLAUDE,
-  });
-
-
 async function generateContent(prompt){
-    const msg = await anthropic.messages.create({
-        model: "claude-3-5-sonnet-20241022",
-        max_tokens: 1024,
-        messages: [{ role: "user", content: prompt}],
-      });
-      return msg
+    try {
+        const response = await axios.post("https://api.openai.com/v1/chat/completions", {
+            model: "gpt-4",
+            messages: [{ role: "user", content: prompt}],
+            max_tokens: 1024,
+            temperature: 0.7
+        }, {
+            headers: {
+                Authorization: `Bearer ${OPENAI}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Return response in a format compatible with the existing code
+        return {
+            content: [{
+                text: response.data.choices[0].message.content
+            }]
+        };
+    } catch (error) {
+        console.error('Error generating content with OpenAI:', error);
+        throw error;
+    }
 }
 
 
@@ -255,34 +265,46 @@ Command automation revolutionizes system management by streamlining repetitive t
       
   
     await Promise.all(
-      slidesContent.map(async slideContent => {
+      slidesContent.map(async (slideContent, slideIndex) => {
        
         let slide = pptx.addSlide({ masterName:template});
+        console.log({slideContent})
 
         slide.addText(slideContent.title, TEMPLATE[template].TITLE);
-        
 
-       slideContent.paragraph.length!=0 && slideContent.paragraph.forEach((text) => {
-            const lines = splitText(text, 80);
 
-            lines.forEach((line,index) => {
-                
-                
-                const { text, options } = TEMPLATE[template].PARAGRAPH(line, index);
-                // console.log({textArray},{options})
-                slide.addText(text,options);
-                
-              });
-            // const {textArray,options} = TEMPLATE[template].CONTENT(text, index);
-
-            // slide.addText(textArray,options);
-        });
-
-        slideContent.content.length!=0 && slideContent.content.forEach((text,index) => {
+        if(slideContent.content.length!=0){
+          slideContent.content.forEach((text,index) => {
             const {textArray,options} = TEMPLATE[template].CONTENT(text, index);
+            
+            // Reduce content width only for first slide
+            if (slideIndex === 0) {
+              options.w = '50%';
+            }
 
             slide.addText(textArray,options);
         });
+    }else{
+      slideContent.paragraph.length!=0 && slideContent.paragraph.forEach((text) => {
+           const lines = splitText(text, 80);
+  
+           lines.forEach((line,index) => {
+               
+               
+               const { text, options } = TEMPLATE[template].PARAGRAPH(line, index);
+               // console.log({textArray},{options})
+               slide.addText(text,options);
+               
+             });
+           // const {textArray,options} = TEMPLATE[template].CONTENT(text, index);
+  
+           // slide.addText(textArray,options);
+       });
+      
+    }
+
+
+        
 
         if(slideContent.image){
           
